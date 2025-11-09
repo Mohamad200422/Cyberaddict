@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cyberaddict | Cyber Security Awareness Hub</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-primary: #020617;
+      --bg-secondary: #0f172a;
+      --bg-elevated: rgba(15, 23, 42, 0.65);
+      --accent: #38bdf8;
+      --accent-strong: #22d3ee;
+      --accent-soft: rgba(56, 189, 248, 0.15);
+      --success: #22c55e;
+      --danger: #ef4444;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --border: rgba(148, 163, 184, 0.2);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow-strong: 0 40px 70px rgba(15, 23, 42, 0.55);
+      --shadow-soft: 0 20px 45px rgba(15, 23, 42, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.18), transparent 55%),
+        var(--bg-secondary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      background: rgba(2, 6, 23, 0.92);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px clamp(20px, 6vw, 60px);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent-strong);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 1rem;
+    }
+
+    nav ul {
+      display: flex;
+      gap: clamp(18px, 4vw, 36px);
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: var(--accent-strong);
+      transition: color 0.2s ease-in-out;
+    }
+
+    .cta-btn {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(14, 165, 233, 0.15));
+      color: var(--accent-strong);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(32px, 6vw, 72px) clamp(20px, 6vw, 60px);
+    }
+
+    .hero {
+      display: grid;
+      gap: clamp(24px, 5vw, 48px);
+      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      margin-top: clamp(28px, 8vh, 72px);
+      padding: clamp(32px, 5vw, 60px);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.65));
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .hero h1 span {
+      color: var(--accent-strong);
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      margin-top: 12px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .hero-stats {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stat-card {
+      padding: 18px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      background: rgba(8, 47, 73, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-card strong {
+      font-size: 1.6rem;
+      color: var(--accent-strong);
+    }
+
+    section {
+      margin-top: clamp(48px, 10vw, 96px);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      max-width: 540px;
+    }
+
+    .grid {
+      display: grid;
+      gap: clamp(18px, 4vw, 28px);
+    }
+
+    .grid-three {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .grid-two {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card {
+      background: rgba(2, 6, 23, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-md);
+      padding: clamp(20px, 4vw, 28px);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 0.97rem;
+    }
+
+    .card ul {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      padding-left: 18px;
+      list-style: disc;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent-strong);
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .split {
+      display: grid;
+      gap: clamp(24px, 5vw, 40px);
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      align-items: center;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .checklist li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .checklist span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.18);
+      color: var(--success);
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .tips-list li::marker {
+      color: var(--accent-strong);
+    }
+
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .resource-card a {
+      color: var(--accent-strong);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .testimonial {
+      display: grid;
+      gap: 14px;
+    }
+
+    .testimonial blockquote {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .testimonial cite {
+      font-style: normal;
+      color: rgba(148, 163, 184, 0.75);
+    }
+
+    .faq-item {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: rgba(15, 23, 42, 0.55);
+    }
+
+    .faq-question {
+      padding: 18px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      padding: 0 20px;
+      color: var(--text-secondary);
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 220px;
+      padding-bottom: 18px;
+    }
+
+    .quiz-section {
+      padding: clamp(28px, 5vw, 42px);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(160deg, rgba(8, 47, 73, 0.75), rgba(12, 74, 110, 0.55));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .quiz-wrapper {
+      display: grid;
+      gap: clamp(24px, 5vw, 40px);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+    }
+
+    .quiz-intro p {
+      color: var(--text-secondary);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .quiz-card {
+      background: rgba(2, 6, 23, 0.85);
+      border-radius: var(--radius-md);
+      padding: clamp(20px, 5vw, 32px);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .quiz-card label {
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    .quiz-card input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-primary);
+    }
+
+    .quiz-card button {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.95), rgba(14, 165, 233, 0.85));
+      color: #02131d;
+      margin-top: 10px;
+      width: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .quiz-card button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .quiz-card ul {
+      list-style: none;
+      margin-top: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .quiz-card li label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.75);
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+
+    .quiz-card li label:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .quiz-card input[type="radio"] {
+      accent-color: var(--success);
+    }
+
+    .result-card {
+      text-align: center;
+      display: grid;
+      gap: 12px;
+    }
+
+    .result-card h2 {
+      font-size: 1.5rem;
+    }
+
+    .score-tag {
+      display: inline-flex;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-strong);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .tips-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+      text-align: left;
+    }
+
+    .tips-grid li {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(2, 6, 23, 0.55);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .contact-card form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .contact-card input,
+    .contact-card textarea {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--text-primary);
+      resize: vertical;
+    }
+
+    .contact-card textarea {
+      min-height: 120px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.9);
+      padding: 32px clamp(20px, 6vw, 60px);
+      margin-top: clamp(60px, 12vw, 120px);
+    }
+
+    footer p {
+      color: rgba(148, 163, 184, 0.6);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      nav ul {
+        display: none;
+      }
+
+      .nav-container {
+        gap: 12px;
+      }
+
+      header {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <a class="brand" href="#top">
+        <span>CA</span>
+        Cyberaddict
+      </a>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#programs">Programs</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#quiz">Quiz</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="cta-btn" href="#quiz">Start Free Quiz</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="hero">
+      <div>
+        <div class="badge">Empower your digital journey</div>
+        <h1>Master <span>Cyber Security Awareness</span> with hands-on learning.</h1>
+        <p>Cyberaddict is your complete hub for staying safe online. Learn the latest security best practices, explore real-world case studies, and measure your knowledge with our interactive tools.</p>
+        <div class="hero-actions">
+          <a class="cta-btn" href="#programs">Explore Programs</a>
+          <a class="cta-btn" href="#quiz" style="background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.4); color: var(--success);">Take the Quiz</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <strong>15K+</strong>
+          <span>Learners trained through Cyberaddict micro-courses and webinars.</span>
+        </div>
+        <div class="stat-card">
+          <strong>92%</strong>
+          <span>Reported higher confidence in identifying phishing attempts.</span>
+        </div>
+        <div class="stat-card">
+          <strong>50+</strong>
+          <span>Guides, checklists, and simulations to help you stay protected.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-header">
+        <div>
+          <div class="badge">Why Cyberaddict</div>
+          <h2>Digital threats evolve daily. So should your awareness.</h2>
+        </div>
+        <p>We bring cybersecurity knowledge to everyone—from students and families to startups and enterprises. Our resources blend practical advice, relatable stories, and engaging assessments to turn awareness into action.</p>
+      </div>
+      <div class="grid grid-three">
+        <article class="card">
+          <h3>Human-centered approach</h3>
+          <p>We translate complex security concepts into relatable examples, ensuring you understand not just the "what" but also the "why" behind each practice.</p>
+        </article>
+        <article class="card">
+          <h3>Guided learning paths</h3>
+          <p>Structured journeys for different roles—remote workers, parents, founders, students—so you learn what matters most to your world.</p>
+        </article>
+        <article class="card">
+          <h3>Always up to date</h3>
+          <p>Our experts monitor emerging threats, scams, and tools weekly. Your dashboard stays refreshed with new lessons and tips every month.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="programs">
+      <div class="section-header">
+        <div>
+          <div class="badge">Programs</div>
+          <h2>Choose the path that matches your goals.</h2>
+        </div>
+        <p>Flexible micro-courses, workshops, and simulations designed to fit busy schedules. Join live or on-demand from any device.</p>
+      </div>
+      <div class="grid grid-three">
+        <article class="card">
+          <h3>Essential Security Starter</h3>
+          <p>Build a solid foundation with password hygiene, network safety, and device protection. Perfect for students and first-time learners.</p>
+          <ul>
+            <li>5 bite-sized video lessons</li>
+            <li>Interactive phishing simulator</li>
+            <li>Weekly safety challenges</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Remote Work Defenders</h3>
+          <p>Stay protected while working from anywhere. Learn secure collaboration, VPN essentials, and how to spot social engineering.</p>
+          <ul>
+            <li>Live incident response drills</li>
+            <li>Secure communication checklists</li>
+            <li>Monthly expert AMA session</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Startup Security Toolkit</h3>
+          <p>Create a culture of security in fast-growing teams. Cover compliance basics, data protection, and crisis communication planning.</p>
+          <ul>
+            <li>Founders-only mastermind</li>
+            <li>Template policies and SOPs</li>
+            <li>Quarterly tabletop exercises</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="split" id="resources">
+      <div>
+        <div class="badge">Resources</div>
+        <h2>Your security checklist for daily life.</h2>
+        <p>Print it, share it, make it your morning ritual. These practices drastically reduce the risk of common attacks targeting everyday users.</p>
+        <ul class="checklist">
+          <li><span>✓</span>Enable multi-factor authentication on critical accounts.</li>
+          <li><span>✓</span>Review permission settings on social apps every quarter.</li>
+          <li><span>✓</span>Use a password manager to generate unique logins.</li>
+          <li><span>✓</span>Update operating systems and antivirus weekly.</li>
+          <li><span>✓</span>Back up essential files to encrypted storage.</li>
+        </ul>
+      </div>
+      <div class="grid grid-two">
+        <article class="card resource-card">
+          <h3>Downloadable Guides</h3>
+          <p>Step-by-step PDFs covering phishing, ransomware, parental controls, and safe online banking.</p>
+          <a href="#">Browse library →</a>
+        </article>
+        <article class="card resource-card">
+          <h3>Security Playbooks</h3>
+          <p>Role-based checklists for HR teams, IT admins, educators, and freelancers to respond calmly during incidents.</p>
+          <a href="#">Explore playbooks →</a>
+        </article>
+        <article class="card resource-card">
+          <h3>News &amp; Alerts</h3>
+          <p>Weekly briefing covering trending scams, data breaches, and fresh attack techniques to watch out for.</p>
+          <a href="#">Read the brief →</a>
+        </article>
+        <article class="card resource-card">
+          <h3>Community Events</h3>
+          <p>Participate in live Q&amp;A sessions, tabletop exercises, and community office hours led by industry mentors.</p>
+          <a href="#">View calendar →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <div class="section-header">
+        <div>
+          <div class="badge">Success Stories</div>
+          <h2>Trusted by learners in 40+ countries.</h2>
+        </div>
+        <p>From schools and non-profits to scaling startups, Cyberaddict drives measurable awareness improvements and a resilient security culture.</p>
+      </div>
+      <div class="grid grid-three">
+        <article class="card testimonial">
+          <blockquote>
+            “Cyberaddict transformed our remote onboarding. New hires pass our phishing tests on the first try now.”
+          </blockquote>
+          <cite>— Aisha, Security Lead at RemoteWave</cite>
+        </article>
+        <article class="card testimonial">
+          <blockquote>
+            “The real-world simulations made our students aware of scams they face daily. Engagement is at an all-time high.”
+          </blockquote>
+          <cite>— Ravi, Coordinator at FutureTech Academy</cite>
+        </article>
+        <article class="card testimonial">
+          <blockquote>
+            “We finally have a single resource that educates our founders and protects customer trust during fundraising.”
+          </blockquote>
+          <cite>— Elena, COO at SeedRise Ventures</cite>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-header">
+        <div>
+          <div class="badge">FAQ</div>
+          <h2>Answers to common questions.</h2>
+        </div>
+        <p>Need more details? Chat with our team or join a live orientation to see which program fits your goals.</p>
+      </div>
+      <div class="grid grid-two">
+        <article class="faq-item">
+          <button class="faq-question" type="button">
+            How much time should I invest weekly?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Most learners dedicate 60–90 minutes per week. Every module is broken into bite-sized lessons that you can complete on your schedule.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button">
+            Can teams track progress together?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Create a team workspace, invite members, and monitor quiz performance, completion rates, and threat simulations in real time.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button">
+            Is the quiz suitable for beginners?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. We designed the quiz to cover fundamentals while challenging you with realistic situations. Perfect for newcomers and refreshers alike.</p>
+          </div>
+        </article>
+        <article class="faq-item">
+          <button class="faq-question" type="button">
+            Do you offer certificates of completion?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Certain programs include verified certificates that can be shared on LinkedIn or added to professional portfolios. Look for the certificate badge on program pages.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="quiz">
+      <div class="quiz-wrapper">
+        <div class="quiz-intro">
+          <div class="badge">Interactive Assessment</div>
+          <h2>Check your cyber instincts.</h2>
+          <p>Take this 10-question quiz to measure your awareness level. Each scenario reflects real-world tactics used by scammers and attackers. Review the tips at the end to strengthen your digital defenses.</p>
+          <p style="margin-top: 16px; color: rgba(148, 163, 184, 0.8);">Tip: Encourage your family or team to take the quiz with you and compare strategies.</p>
+        </div>
+
+        <div class="quiz-card">
+          <div id="start-screen">
+            <label for="username">Enter your name to begin:</label>
+            <input type="text" id="username" placeholder="e.g. Jordan" autocomplete="name" />
+            <button id="start-btn" type="button">Start Quiz</button>
+          </div>
+
+          <div id="quiz-screen" class="hidden">
+            <p id="user-greeting"></p>
+            <p id="question-number"></p>
+            <p id="question-text"></p>
+            <ul id="options"></ul>
+            <button id="next-btn" type="button">Next</button>
+          </div>
+
+          <div id="result-screen" class="hidden result-card">
+            <div class="score-tag" id="score-text"></div>
+            <h2 id="level-text"></h2>
+            <p>Keep these golden rules in mind:</p>
+            <ul class="tips-grid">
+              <li>Never share your OTP, password, or UPI PIN with anyone.</li>
+              <li>Verify website URLs—secure sites begin with <strong>https://</strong>.</li>
+              <li>Avoid clicking unexpected links from SMS, email, or social media.</li>
+              <li>Create strong, unique passwords using letters, numbers, and symbols.</li>
+              <li>Enable two-factor authentication (2FA) on critical accounts.</li>
+            </ul>
+            <button id="restart-btn" type="button">Restart Quiz</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-header">
+        <div>
+          <div class="badge">Let’s Connect</div>
+          <h2>Bring Cyberaddict to your classroom or company.</h2>
+        </div>
+        <p>We tailor experiences for organizations of every size. Tell us about your goals and we’ll share a personalized rollout plan.</p>
+      </div>
+      <div class="grid grid-two">
+        <article class="card contact-card">
+          <form>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Full name" required />
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            <label for="message">How can we help?</label>
+            <textarea id="message" name="message" placeholder="Share a bit about your security goals"></textarea>
+            <button class="cta-btn" type="submit" style="justify-content: center;">Request a call</button>
+          </form>
+        </article>
+        <article class="card">
+          <h3>Support channels</h3>
+          <ul class="tips-grid">
+            <li>Email: support@cyberaddict.io</li>
+            <li>Live chat: Weekdays 9am – 7pm IST</li>
+            <li>Workshops: First Thursday of every month</li>
+            <li>Newsletter: Weekly threat briefings and tool reviews</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Cyberaddict. Stay alert, stay empowered.</p>
+  </footer>
+
+  <script>
+    const currentYear = new Date().getFullYear();
+    document.getElementById("year").textContent = currentYear;
+
+    const faqItems = document.querySelectorAll(".faq-item");
+    faqItems.forEach((item) => {
+      const question = item.querySelector(".faq-question");
+      question.addEventListener("click", () => {
+        item.classList.toggle("open");
+      });
+    });
+
+    const quizData = [
+      {
+        question: "What is the safest way to create a password?",
+        options: [
+          "Use your name and birthdate",
+          "Use '123456' so you remember",
+          "Use a mix of letters, numbers & symbols",
+          "Use only small letters"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "A message says 'You won a lottery, click this link'. What should you do?",
+        options: [
+          "Click quickly before it expires",
+          "Share it with friends",
+          "Ignore / delete it",
+          "Reply with your bank details"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "Which of these is a sign of a phishing website?",
+        options: [
+          "Spelling mistakes and strange URL",
+          "Correct company logo and name",
+          "HTTPS lock icon in browser",
+          "Found via official app"
+        ],
+        correctIndex: 0
+      },
+      {
+        question: "What is 2FA (Two-Factor Authentication)?",
+        options: [
+          "Using two phones at once",
+          "Login with password + extra OTP/code",
+          "Changing password twice a day",
+          "Using two browsers"
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "You get an OTP you did not request. What should you do?",
+        options: [
+          "Share it with caller to stop it",
+          "Ignore it and do not share with anyone",
+          "Post it in group for help",
+          "Enter it on any website"
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "Which Wi-Fi is safer to use for online banking?",
+        options: [
+          "Public free Wi-Fi in mall",
+          "Friend’s hotspot without password",
+          "Your secured home Wi-Fi",
+          "Any Wi-Fi with strong signal"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "What should you check before entering card details on a site?",
+        options: [
+          "Website is colorful",
+          "Website loads fast",
+          "Website URL starts with https://",
+          "It gives big discount"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "What is malware?",
+        options: [
+          "A type of strong password",
+          "A mobile ringtone",
+          "Software made to harm your device",
+          "Free game from Play Store"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "Which is a good cyber safety habit?",
+        options: [
+          "Using same password everywhere",
+          "Sharing password with best friend",
+          "Logging out from accounts on shared computers",
+          "Saving passwords in public notes"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "If a stranger asks for your UPI PIN, you should:",
+        options: [
+          "Tell them politely",
+          "Share only last digit",
+          "Give wrong PIN",
+          "Never share, it is secret"
+        ],
+        correctIndex: 3
+      }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = [];
+    let username = "";
+
+    const startScreen = document.getElementById("start-screen");
+    const quizScreen = document.getElementById("quiz-screen");
+    const resultScreen = document.getElementById("result-screen");
+    const startBtn = document.getElementById("start-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const usernameInput = document.getElementById("username");
+    const userGreeting = document.getElementById("user-greeting");
+    const questionNumberEl = document.getElementById("question-number");
+    const questionTextEl = document.getElementById("question-text");
+    const optionsList = document.getElementById("options");
+    const scoreText = document.getElementById("score-text");
+    const levelText = document.getElementById("level-text");
+
+    startBtn.addEventListener("click", () => {
+      username = usernameInput.value.trim();
+      if (!username) {
+        alert("Please enter your name to start.");
+        return;
+      }
+      startScreen.classList.add("hidden");
+      quizScreen.classList.remove("hidden");
+      userGreeting.textContent = `Hi, ${username}! Answer these questions honestly.`;
+      currentQuestion = 0;
+      userAnswers = new Array(quizData.length).fill(null);
+      loadQuestion();
+    });
+
+    function loadQuestion() {
+      const qData = quizData[currentQuestion];
+      questionNumberEl.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+      questionTextEl.textContent = qData.question;
+
+      optionsList.innerHTML = "";
+      qData.options.forEach((opt, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <label>
+            <input type="radio" name="option" value="${index}" />
+            <span>${opt}</span>
+          </label>
+        `;
+        optionsList.appendChild(li);
+      });
+
+      if (userAnswers[currentQuestion] !== null) {
+        const radios = optionsList.querySelectorAll('input[name="option"]');
+        radios[userAnswers[currentQuestion]].checked = true;
+      }
+
+      nextBtn.textContent = currentQuestion === quizData.length - 1 ? "Submit Quiz" : "Next";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (!selected) {
+        alert("Please select an answer before continuing.");
+        return;
+      }
+
+      const selectedIndex = parseInt(selected.value, 10);
+      userAnswers[currentQuestion] = selectedIndex;
+
+      if (currentQuestion === quizData.length - 1) {
+        finishQuiz();
+      } else {
+        currentQuestion++;
+        loadQuestion();
+      }
+    });
+
+    function finishQuiz() {
+      let score = 0;
+      userAnswers.forEach((ans, i) => {
+        if (ans === quizData[i].correctIndex) {
+          score++;
+        }
+      });
+
+      quizScreen.classList.add("hidden");
+      resultScreen.classList.remove("hidden");
+
+      scoreText.textContent = `${username}, you scored ${score} / ${quizData.length}`;
+
+      let level = "";
+      if (score <= 4) {
+        level = "Low Cyber Awareness – Spend time with our starter guides.";
+      } else if (score <= 7) {
+        level = "Medium Cyber Awareness – You're getting there, keep practicing.";
+      } else {
+        level = "High Cyber Awareness – Excellent! Stay consistent and mentor others.";
+      }
+      levelText.textContent = level;
+    }
+
+    restartBtn.addEventListener("click", () => {
+      resultScreen.classList.add("hidden");
+      startScreen.classList.remove("hidden");
+      usernameInput.value = "";
+    });
+  </script>
+</body>
+</html>
