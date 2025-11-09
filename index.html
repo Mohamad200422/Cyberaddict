@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyber Security Awareness Quiz</title>
+
+  <!-- CSS Yahi Pe Inline -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #020617;
+      padding: 24px 28px;
+      border-radius: 16px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #9ca3af;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    #username {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: #22c55e;
+      color: #022c22;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #user-greeting {
+      font-size: 14px;
+      color: #a5b4fc;
+      margin-bottom: 8px;
+    }
+
+    #question-number {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    #question-text {
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+
+    #options {
+      list-style: none;
+      margin-bottom: 12px;
+    }
+
+    #options li {
+      margin-bottom: 8px;
+    }
+
+    #options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #020617;
+      border: 1px solid #1f2937;
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #options input[type="radio"] {
+      accent-color: #22c55e;
+    }
+
+    #result-screen h2 {
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    #score-text, #level-text {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .tips {
+      font-size: 14px;
+      color: #d1d5db;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      padding-left: 16px;
+    }
+
+    .tips li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cyber Security Awareness Quiz</h1>
+    <p class="subtitle">Test your basic cyber safety knowledge in a few minutes.</p>
+
+    <!-- Start Screen -->
+    <div id="start-screen">
+      <label for="username">Enter your name:</label>
+      <input type="text" id="username" placeholder="e.g. Abutalha" />
+      <button id="start-btn">Start Quiz</button>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden">
+      <div id="user-greeting"></div>
+      <div id="question-number"></div>
+      <div id="question-text"></div>
+
+      <ul id="options">
+        <!-- Options will be filled by JS -->
+      </ul>
+
+      <button id="next-btn">Next</button>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="hidden">
+      <h2>Quiz Result</h2>
+      <p id="score-text"></p>
+      <p id="level-text"></p>
+
+      <h3>Basic Cyber Safety Tips</h3>
+      <ul class="tips">
+        <li>Never share your OTP, password or UPI PIN with anyone.</li>
+        <li>Always check the website URL – it should start with <b>https://</b>.</li>
+        <li>Do not click on unknown links from SMS, WhatsApp or email.</li>
+        <li>Use strong passwords with letters, numbers and symbols.</li>
+        <li>Enable two-factor authentication (2FA) wherever possible.</li>
+      </ul>
+
+      <button id="restart-btn">Play Again</button>
+    </div>
+  </div>
+
+  <!-- JS Yahi Pe Inline -->
+  <script>
+    // Quiz questions
+    const quizData = [
+      {
+        question: "What is the safest way to create a password?",
+        options: [
+          "Use your name and birthdate",
+          "Use '123456' so you remember",
+          "Use a mix of letters, numbers & symbols",
+          "Use only small letters"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "A message says 'You won a lottery, click this link'. What should you do?",
+        options: [
+          "Click quickly before it expires",
+          "Share it with friends",
+          "Ignore / delete it",
+          "Reply with your bank details"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "Which of these is a sign of a phishing website?",
+        options: [
+          "Spelling mistakes and strange URL",
+          "Correct company logo and name",
+          "HTTPS lock icon in browser",
+          "Found via official app"
+        ],
+        correctIndex: 0
+      },
+      {
+        question: "What is 2FA (Two-Factor Authentication)?",
+        options: [
+          "Using two phones at once",
+          "Login with password + extra OTP/code",
+          "Changing password twice a day",
+          "Using two browsers"
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "You get an OTP you did not request. What should you do?",
+        options: [
+          "Share it with caller to stop it",
+          "Ignore it and do not share with anyone",
+          "Post it in group for help",
+          "Enter it on any website"
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "Which Wi-Fi is safer to use for online banking?",
+        options: [
+          "Public free Wi-Fi in mall",
+          "Friend’s hotspot without password",
+          "Your secured home Wi-Fi",
+          "Any Wi-Fi with strong signal"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "What should you check before entering card details on a site?",
+        options: [
+          "Website is colorful",
+          "Website loads fast",
+          "Website URL starts with https://",
+          "It gives big discount"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "What is malware?",
+        options: [
+          "A type of strong password",
+          "A mobile ringtone",
+          "Software made to harm your device",
+          "Free game from Play Store"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "Which is a good cyber safety habit?",
+        options: [
+          "Using same password everywhere",
+          "Sharing password with best friend",
+          "Logging out from accounts on shared computers",
+          "Saving passwords in public notes"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "If a stranger asks for your UPI PIN, you should:",
+        options: [
+          "Tell them politely",
+          "Share only last digit",
+          "Give wrong PIN",
+          "Never share, it is secret"
+        ],
+        correctIndex: 3
+      }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = [];
+    let username = "";
+
+    // DOM elements
+    const startScreen = document.getElementById("start-screen");
+    const quizScreen = document.getElementById("quiz-screen");
+    const resultScreen = document.getElementById("result-screen");
+
+    const startBtn = document.getElementById("start-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const restartBtn = document.getElementById("restart-btn");
+
+    const usernameInput = document.getElementById("username");
+    const userGreeting = document.getElementById("user-greeting");
+    const questionNumberEl = document.getElementById("question-number");
+    const questionTextEl = document.getElementById("question-text");
+    const optionsList = document.getElementById("options");
+    const scoreText = document.getElementById("score-text");
+    const levelText = document.getElementById("level-text");
+
+    // Start Quiz
+    startBtn.addEventListener("click", () => {
+      username = usernameInput.value.trim();
+      if (!username) {
+        alert("Please enter your name to start.");
+        return;
+      }
+      startScreen.classList.add("hidden");
+      quizScreen.classList.remove("hidden");
+      userGreeting.textContent = `Hi, ${username}. Answer these questions honestly.`;
+      currentQuestion = 0;
+      userAnswers = new Array(quizData.length).fill(null);
+      loadQuestion();
+    });
+
+    // Load question into UI
+    function loadQuestion() {
+      const qData = quizData[currentQuestion];
+      questionNumberEl.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+      questionTextEl.textContent = qData.question;
+
+      optionsList.innerHTML = "";
+      qData.options.forEach((opt, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <label>
+            <input type="radio" name="option" value="${index}" />
+            <span>${opt}</span>
+          </label>
+        `;
+        optionsList.appendChild(li);
+      });
+
+      // If user had already answered, pre-select
+      if (userAnswers[currentQuestion] !== null) {
+        const radios = document.querySelectorAll('input[name="option"]');
+        radios[userAnswers[currentQuestion]].checked = true;
+      }
+
+      // Change button text on last question
+      if (currentQuestion === quizData.length - 1) {
+        nextBtn.textContent = "Submit Quiz";
+      } else {
+        nextBtn.textContent = "Next";
+      }
+    }
+
+    // Next / Submit button
+    nextBtn.addEventListener("click", () => {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (!selected) {
+        alert("Please select an answer before continuing.");
+        return;
+      }
+
+      const selectedIndex = parseInt(selected.value, 10);
+      userAnswers[currentQuestion] = selectedIndex;
+
+      if (currentQuestion === quizData.length - 1) {
+        // Calculate score and show result
+        finishQuiz();
+      } else {
+        currentQuestion++;
+        loadQuestion();
+      }
+    });
+
+    // Calculate score and display result
+    function finishQuiz() {
+      let score = 0;
+      userAnswers.forEach((ans, i) => {
+        if (ans === quizData[i].correctIndex) {
+          score++;
+        }
+      });
+
+      quizScreen.classList.add("hidden");
+      resultScreen.classList.remove("hidden");
+
+      scoreText.textContent = `${username}, you scored ${score} out of ${quizData.length}.`;
+
+      let level = "";
+      if (score <= 4) {
+        level = "Low Cyber Awareness – You should learn more about online safety.";
+      } else if (score <= 7) {
+        level = "Medium Cyber Awareness – Good, but there is room to improve.";
+      } else {
+        level = "High Cyber Awareness – Great job! Keep following safe practices.";
+      }
+      levelText.textContent = level;
+    }
+
+    // Restart quiz
+    restartBtn.addEventListener("click", () => {
+      resultScreen.classList.add("hidden");
+      startScreen.classList.remove("hidden");
+      usernameInput.value = "";
+    });
+  </script>
+</body>
+</html>
