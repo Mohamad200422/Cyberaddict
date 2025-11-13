@@ -2,416 +2,889 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cyber Security Awareness Quiz</title>
-
-  <!-- CSS Yahi Pe Inline -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PulseForge Fitness</title>
   <style>
-    * {
+    :root {
+      color-scheme: light dark;
+      --bg: #07090f;
+      --surface: #0e121d;
+      --surface-muted: #131a2b;
+      --primary: #5be0b3;
+      --primary-dark: #3ab789;
+      --accent: #5b8ae0;
+      --text: #f8fafc;
+      --text-muted: #cbd5f5;
+      --border: rgba(148, 163, 184, 0.2);
+      font-size: 16px;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
-      background: #0f172a;
-      color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      margin: 0;
+      background: radial-gradient(circle at top left, rgba(91, 224, 179, 0.15), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(91, 138, 224, 0.15), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
 
-    .container {
-      background: #020617;
-      padding: 24px 28px;
-      border-radius: 16px;
-      max-width: 480px;
-      width: 100%;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: #9ca3af;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    label {
-      font-size: 14px;
-      margin-bottom: 4px;
+    img {
+      max-width: 100%;
       display: block;
     }
 
-    #username {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    button {
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: #22c55e;
-      color: #022c22;
-      margin-top: 8px;
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
-    button:hover {
-      opacity: 0.9;
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 9, 15, 0.8);
+      border-bottom: 1px solid var(--border);
     }
 
-    .hidden {
-      display: none;
-    }
-
-    #user-greeting {
-      font-size: 14px;
-      color: #a5b4fc;
-      margin-bottom: 8px;
-    }
-
-    #question-number {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
-
-    #question-text {
-      font-size: 16px;
-      margin-bottom: 14px;
-    }
-
-    #options {
-      list-style: none;
-      margin-bottom: 12px;
-    }
-
-    #options li {
-      margin-bottom: 8px;
-    }
-
-    #options label {
+    .nav-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: #020617;
-      border: 1px solid #1f2937;
-      padding: 8px 10px;
-      border-radius: 10px;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      display: inline-flex;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #020617;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: none;
+      color: #020617;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    #options input[type="radio"] {
-      accent-color: #22c55e;
+    .btn.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    #result-screen h2 {
-      margin-bottom: 8px;
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(91, 224, 179, 0.25);
+    }
+
+    .hero {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 5rem;
+      display: grid;
+      gap: 3rem;
+      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 4vw, 3.8rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .badge {
+      padding: 0.35rem 0.85rem;
+      background: rgba(91, 224, 179, 0.12);
+      border: 1px solid rgba(91, 224, 179, 0.35);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-media {
+      position: relative;
+    }
+
+    .hero-media img {
+      border-radius: 24px;
+      box-shadow: 0 32px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-card {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: auto;
+      background: rgba(14, 18, 29, 0.85);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      max-width: 220px;
+    }
+
+    .hero-card strong {
+      display: block;
+      font-size: 1.5rem;
+    }
+
+    section {
+      padding: 4.5rem 1.5rem;
+    }
+
+    .section-heading {
       text-align: center;
+      max-width: 720px;
+      margin: 0 auto 3rem;
     }
 
-    #score-text, #level-text {
+    .section-heading h2 {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-heading p {
+      color: var(--text-muted);
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.75rem;
+    }
+
+    .features {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .card {
+      background: var(--surface);
+      padding: 1.75rem;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .stat {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .schedule-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .schedule-controls button {
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .schedule-controls button.active {
+      background: var(--primary);
+      color: #020617;
+      border-color: transparent;
+    }
+
+    .schedule-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .schedule-item strong {
+      font-size: 1.1rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(91, 138, 224, 0.18);
+      color: #e0e9ff;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      margin-top: auto;
+      width: fit-content;
+    }
+
+    .planner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      align-items: start;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .planner-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .planner-form select,
+    .planner-form input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-muted);
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    .planner-results ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .trainer-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .trainer-card img {
+      border-radius: 16px;
+      height: 220px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .pricing-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      padding: 2rem;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .pricing-card.popular {
+      border: 1px solid rgba(91, 224, 179, 0.5);
+      box-shadow: 0 24px 48px rgba(91, 224, 179, 0.15);
+    }
+
+    .pricing-card h3 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
+
+    .pricing-card .price {
+      font-size: 2.4rem;
+      font-weight: 700;
+    }
+
+    .pricing-card ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.65rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .testimonial-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    blockquote {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    blockquote footer {
+      margin-top: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .newsletter {
+      max-width: 960px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(91, 224, 179, 0.12), rgba(91, 138, 224, 0.12));
+      border: 1px solid rgba(91, 224, 179, 0.25);
+      padding: 3rem;
+      border-radius: 24px;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .newsletter input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(91, 224, 179, 0.4);
+      background: rgba(7, 9, 15, 0.8);
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      padding: 3rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: rgba(7, 9, 15, 0.8);
+    }
+
+    .footer-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .footer-grid ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.4rem;
+      color: var(--text-muted);
+    }
+
+    .footer-bottom {
       text-align: center;
-      margin-bottom: 8px;
+      margin-top: 2rem;
+      color: rgba(148, 163, 184, 0.6);
+      font-size: 0.85rem;
     }
 
-    .tips {
-      font-size: 14px;
-      color: #d1d5db;
-      margin-top: 8px;
-      margin-bottom: 8px;
-      padding-left: 16px;
-    }
+    @media (max-width: 720px) {
+      nav {
+        display: none;
+      }
 
-    .tips li {
-      margin-bottom: 4px;
+      .hero {
+        padding-top: 3rem;
+      }
+
+      .newsletter {
+        padding: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Cyber Security Awareness Quiz</h1>
-    <p class="subtitle">Test your basic cyber safety knowledge in a few minutes.</p>
-
-    <!-- Start Screen -->
-    <div id="start-screen">
-      <label for="username">Enter your name:</label>
-      <input type="text" id="username" placeholder="e.g. Abutalha" />
-      <button id="start-btn">Start Quiz</button>
+  <header>
+    <div class="nav-container">
+      <a href="#home" class="logo"><span>PF</span> PulseForge Fitness</a>
+      <nav>
+        <a href="#programs">Programs</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#planner">Planner</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn" href="#pricing">Start Free Week</a>
     </div>
+  </header>
 
-    <!-- Quiz Screen -->
-    <div id="quiz-screen" class="hidden">
-      <div id="user-greeting"></div>
-      <div id="question-number"></div>
-      <div id="question-text"></div>
+  <main id="home">
+    <section class="hero">
+      <div>
+        <div class="badge">Rated #1 boutique gym in the city</div>
+        <h1>Forge your strongest self with science-backed workouts.</h1>
+        <p>
+          Join a community of athletes, creators, and everyday heroes training with personalized plans,
+          performance tracking, and coaching that keeps you accountable.
+        </p>
+        <div class="hero-cta">
+          <a class="btn" href="#planner">Build your plan</a>
+          <a class="btn secondary" href="#schedule">View classes</a>
+        </div>
+        <div class="badge-group">
+          <div class="badge">24/7 Access</div>
+          <div class="badge">Expert Coaches</div>
+          <div class="badge">Hybrid Training</div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=900&q=80" alt="People training in a modern gym" />
+        <div class="hero-card">
+          <small>Personal Records This Month</small>
+          <strong>127</strong>
+          <p class="stat-subtext">Members hit new PRs thanks to adaptive programming.</p>
+        </div>
+      </div>
+    </section>
 
-      <ul id="options">
-        <!-- Options will be filled by JS -->
-      </ul>
+    <section id="programs">
+      <div class="section-heading">
+        <h2>Programs engineered to move you forward</h2>
+        <p>Choose from performance-driven classes and on-demand training built for every lifestyle.</p>
+      </div>
+      <div class="grid features">
+        <article class="card">
+          <h3>Strength Lab</h3>
+          <p>Barbell complexes, functional strength, and progressive overload cycles coached by Level 2 trainers.</p>
+          <span class="tag">Intermediate</span>
+        </article>
+        <article class="card">
+          <h3>MetCon 45</h3>
+          <p>High-intensity interval circuits blending cardio, power, and skill work to torch calories fast.</p>
+          <span class="tag">All Levels</span>
+        </article>
+        <article class="card">
+          <h3>Mobility Reset</h3>
+          <p>Deep stretch flows and breath work to improve recovery, posture, and joint health.</p>
+          <span class="tag">Beginner</span>
+        </article>
+        <article class="card">
+          <h3>Hybrid Athlete</h3>
+          <p>Endurance meets strength. Build a resilient engine with run coaching, interval rides, and strength splits.</p>
+          <span class="tag">Advanced</span>
+        </article>
+      </div>
+    </section>
 
-      <button id="next-btn">Next</button>
+    <section id="schedule">
+      <div class="section-heading">
+        <h2>Weekly studio schedule</h2>
+        <p>Reserve a spot in-studio or stream the class live. Filter by day to discover your next session.</p>
+      </div>
+      <div class="schedule-controls" role="tablist" aria-label="Class schedule filter">
+        <button class="active" data-day="all" role="tab" aria-selected="true">All</button>
+        <button data-day="monday" role="tab">Mon</button>
+        <button data-day="tuesday" role="tab">Tue</button>
+        <button data-day="wednesday" role="tab">Wed</button>
+        <button data-day="thursday" role="tab">Thu</button>
+        <button data-day="friday" role="tab">Fri</button>
+        <button data-day="saturday" role="tab">Sat</button>
+      </div>
+      <div class="grid schedule-grid" id="scheduleGrid"></div>
+    </section>
+
+    <section id="planner">
+      <div class="section-heading">
+        <h2>Build your custom training plan</h2>
+        <p>Tell us your focus and we will assemble a weekly split with recommended sessions.</p>
+      </div>
+      <div class="planner">
+        <form class="card planner-form" id="plannerForm">
+          <label for="goal">Primary goal</label>
+          <select id="goal" required>
+            <option value="">Select a goal</option>
+            <option value="strength">Increase strength</option>
+            <option value="fatloss">Lose body fat</option>
+            <option value="endurance">Boost endurance</option>
+            <option value="mobility">Improve mobility</option>
+          </select>
+
+          <label for="level">Experience level</label>
+          <select id="level" required>
+            <option value="">Choose level</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+
+          <label for="days">Days per week</label>
+          <input type="number" id="days" min="2" max="6" placeholder="e.g. 4" required />
+
+          <button class="btn" type="submit">Generate plan</button>
+        </form>
+        <div class="card planner-results" aria-live="polite">
+          <h3>Your smart split</h3>
+          <p id="planIntro">Complete the form to see your personalized recommendation.</p>
+          <ul id="planList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="team">
+      <div class="section-heading">
+        <h2>Coach roster</h2>
+        <p>Certified experts with backgrounds in sports science, physical therapy, and high-performance coaching.</p>
+      </div>
+      <div class="grid trainer-grid">
+        <article class="card trainer-card">
+          <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&w=800&q=80" alt="Coach Maya leading a strength class" />
+          <h3>Maya Chen</h3>
+          <p>USA Weightlifting Level 2 coach specializing in Olympic lifting technique and hypertrophy programming.</p>
+        </article>
+        <article class="card trainer-card">
+          <img src="https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?auto=format&fit=crop&w=800&q=80" alt="Coach Luca demonstrating kettlebell work" />
+          <h3>Luca Rivera</h3>
+          <p>CrossFit L-2 and endurance coach blending metabolic conditioning with structured run training.</p>
+        </article>
+        <article class="card trainer-card">
+          <img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?auto=format&fit=crop&w=800&q=80" alt="Coach Aria helping a member stretch" />
+          <h3>Aria Patel</h3>
+          <p>Mobility specialist and licensed therapist helping members unlock pain-free performance.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-heading">
+        <h2>Memberships that scale with your ambition</h2>
+        <p>All plans include unlimited recovery lounge access, progress tracking, and accountability coaching.</p>
+      </div>
+      <div class="grid pricing-grid">
+        <article class="pricing-card">
+          <h3>Starter</h3>
+          <div class="price">$69<span style="font-size: 1rem; font-weight: 500;">/mo</span></div>
+          <p>Perfect for building consistency with two guided sessions weekly.</p>
+          <ul>
+            <li>8 studio classes per month</li>
+            <li>On-demand library access</li>
+            <li>Quarterly body composition scan</li>
+          </ul>
+          <a class="btn secondary" href="#contact">Choose Starter</a>
+        </article>
+        <article class="pricing-card popular">
+          <h3>Unlimited</h3>
+          <div class="price">$129<span style="font-size: 1rem; font-weight: 500;">/mo</span></div>
+          <p>Daily coaching, personalized programming, and open gym access anytime.</p>
+          <ul>
+            <li>Unlimited studio + virtual classes</li>
+            <li>Monthly goal review with your coach</li>
+            <li>Recovery lounge & ice bath access</li>
+          </ul>
+          <a class="btn" href="#contact">Most Popular</a>
+        </article>
+        <article class="pricing-card">
+          <h3>Elite</h3>
+          <div class="price">$219<span style="font-size: 1rem; font-weight: 500;">/mo</span></div>
+          <p>For athletes seeking 1:1 coaching, performance testing, and travel-ready programming.</p>
+          <ul>
+            <li>Weekly personal training session</li>
+            <li>Custom nutrition strategy</li>
+            <li>Unlimited guest passes</li>
+          </ul>
+          <a class="btn secondary" href="#contact">Go Elite</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <div class="section-heading">
+        <h2>Members are leveling up fast</h2>
+        <p>Real stories from the PulseForge community.</p>
+      </div>
+      <div class="grid testimonial-grid">
+        <article class="card">
+          <blockquote>
+            “PulseForge rebuilt my training confidence. I added 40 lbs to my squat in 12 weeks and improved my mile time.”
+            <footer>Jordan P. · Product Designer</footer>
+          </blockquote>
+        </article>
+        <article class="card">
+          <blockquote>
+            “The Hybrid Athlete program keeps me race-ready while staying strong. The coaches are relentlessly supportive.”
+            <footer>Simone K. · Triathlete</footer>
+          </blockquote>
+        </article>
+        <article class="card">
+          <blockquote>
+            “Daily mobility flows plus strength sessions mean no more nagging injuries. The app reminders keep me accountable.”
+            <footer>Andre L. · Photographer</footer>
+          </blockquote>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="newsletter">
+        <div>
+          <h2>Book a free consult</h2>
+          <p>Drop your email and we’ll match you with a coach for a complimentary 30-minute strategy session.</p>
+        </div>
+        <form id="contactForm">
+          <label for="email" class="sr-only">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          <button class="btn" type="submit">Claim your session</button>
+          <p id="formStatus" aria-live="polite" style="margin: 1rem 0 0; font-size: 0.95rem; color: var(--text-muted);"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom: 1rem;"><span>PF</span> PulseForge Fitness</div>
+        <p style="color: var(--text-muted);">
+          Elevating movement, mindset, and community through elite coaching and human-first technology.
+        </p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#programs">Programs</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#pricing">Memberships</a></li>
+          <li><a href="#team">Team</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li>Training app (iOS + Android)</li>
+          <li>Nutrition starter guide</li>
+          <li>Recovery protocols</li>
+          <li>Corporate wellness</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li>128 Forge Street, Suite 04</li>
+          <li>Aurora District, CA 94016</li>
+          <li>(415) 555-0199</li>
+          <li>hello@pulseforge.fit</li>
+        </ul>
+      </div>
     </div>
+    <div class="footer-bottom">© <span id="year"></span> PulseForge Fitness. All rights reserved.</div>
+  </footer>
 
-    <!-- Result Screen -->
-    <div id="result-screen" class="hidden">
-      <h2>Quiz Result</h2>
-      <p id="score-text"></p>
-      <p id="level-text"></p>
-
-      <h3>Basic Cyber Safety Tips</h3>
-      <ul class="tips">
-        <li>Never share your OTP, password or UPI PIN with anyone.</li>
-        <li>Always check the website URL – it should start with <b>https://</b>.</li>
-        <li>Do not click on unknown links from SMS, WhatsApp or email.</li>
-        <li>Use strong passwords with letters, numbers and symbols.</li>
-        <li>Enable two-factor authentication (2FA) wherever possible.</li>
-      </ul>
-
-      <button id="restart-btn">Play Again</button>
-    </div>
-  </div>
-
-  <!-- JS Yahi Pe Inline -->
   <script>
-    // Quiz questions
-    const quizData = [
-      {
-        question: "What is the safest way to create a password?",
-        options: [
-          "Use your name and birthdate",
-          "Use '123456' so you remember",
-          "Use a mix of letters, numbers & symbols",
-          "Use only small letters"
-        ],
-        correctIndex: 2
-      },
-      {
-        question: "A message says 'You won a lottery, click this link'. What should you do?",
-        options: [
-          "Click quickly before it expires",
-          "Share it with friends",
-          "Ignore / delete it",
-          "Reply with your bank details"
-        ],
-        correctIndex: 2
-      },
-      {
-        question: "Which of these is a sign of a phishing website?",
-        options: [
-          "Spelling mistakes and strange URL",
-          "Correct company logo and name",
-          "HTTPS lock icon in browser",
-          "Found via official app"
-        ],
-        correctIndex: 0
-      },
-      {
-        question: "What is 2FA (Two-Factor Authentication)?",
-        options: [
-          "Using two phones at once",
-          "Login with password + extra OTP/code",
-          "Changing password twice a day",
-          "Using two browsers"
-        ],
-        correctIndex: 1
-      },
-      {
-        question: "You get an OTP you did not request. What should you do?",
-        options: [
-          "Share it with caller to stop it",
-          "Ignore it and do not share with anyone",
-          "Post it in group for help",
-          "Enter it on any website"
-        ],
-        correctIndex: 1
-      },
-      {
-        question: "Which Wi-Fi is safer to use for online banking?",
-        options: [
-          "Public free Wi-Fi in mall",
-          "Friend’s hotspot without password",
-          "Your secured home Wi-Fi",
-          "Any Wi-Fi with strong signal"
-        ],
-        correctIndex: 2
-      },
-      {
-        question: "What should you check before entering card details on a site?",
-        options: [
-          "Website is colorful",
-          "Website loads fast",
-          "Website URL starts with https://",
-          "It gives big discount"
-        ],
-        correctIndex: 2
-      },
-      {
-        question: "What is malware?",
-        options: [
-          "A type of strong password",
-          "A mobile ringtone",
-          "Software made to harm your device",
-          "Free game from Play Store"
-        ],
-        correctIndex: 2
-      },
-      {
-        question: "Which is a good cyber safety habit?",
-        options: [
-          "Using same password everywhere",
-          "Sharing password with best friend",
-          "Logging out from accounts on shared computers",
-          "Saving passwords in public notes"
-        ],
-        correctIndex: 2
-      },
-      {
-        question: "If a stranger asks for your UPI PIN, you should:",
-        options: [
-          "Tell them politely",
-          "Share only last digit",
-          "Give wrong PIN",
-          "Never share, it is secret"
-        ],
-        correctIndex: 3
-      }
+    const scheduleData = [
+      { title: "Strength Lab", day: "monday", time: "6:30 AM", coach: "Maya", level: "Intermediate" },
+      { title: "MetCon 45", day: "monday", time: "5:30 PM", coach: "Luca", level: "All Levels" },
+      { title: "Mobility Reset", day: "tuesday", time: "7:15 AM", coach: "Aria", level: "Beginner" },
+      { title: "Hybrid Athlete", day: "tuesday", time: "6:00 PM", coach: "Luca", level: "Advanced" },
+      { title: "Run Club", day: "wednesday", time: "6:15 AM", coach: "Luca", level: "All Levels" },
+      { title: "Olympic Lifting", day: "wednesday", time: "7:00 PM", coach: "Maya", level: "Advanced" },
+      { title: "MetCon 45", day: "thursday", time: "12:15 PM", coach: "Maya", level: "Intermediate" },
+      { title: "Mobility Reset", day: "thursday", time: "6:45 PM", coach: "Aria", level: "Beginner" },
+      { title: "Strength Lab", day: "friday", time: "6:30 AM", coach: "Maya", level: "Intermediate" },
+      { title: "Hybrid Athlete", day: "friday", time: "5:30 PM", coach: "Luca", level: "Advanced" },
+      { title: "Community Conditioning", day: "saturday", time: "9:00 AM", coach: "Team", level: "All Levels" }
     ];
 
-    let currentQuestion = 0;
-    let userAnswers = [];
-    let username = "";
+    const routineTemplates = {
+      strength: [
+        "Day 1 · Heavy compound lifts (Squat + Push) + accessory pulls",
+        "Day 2 · Functional bodybuilding circuit + core stability",
+        "Day 3 · Posterior chain focus + sled work",
+        "Day 4 · Olympic lift technique + conditioning finisher"
+      ],
+      fatloss: [
+        "Day 1 · HIIT intervals + metabolic resistance training",
+        "Day 2 · Full-body strength endurance + zone 2 cardio",
+        "Day 3 · Core + mobility reset",
+        "Day 4 · Hybrid athlete brick session",
+        "Day 5 · Active recovery run or ride"
+      ],
+      endurance: [
+        "Day 1 · Interval track session + plyometric prep",
+        "Day 2 · Strength maintenance lifts + accessory work",
+        "Day 3 · Tempo run or ride",
+        "Day 4 · Long endurance session with fueling practice",
+        "Day 5 · Mobility + breath work"
+      ],
+      mobility: [
+        "Day 1 · Full-body mobility flow + soft tissue reset",
+        "Day 2 · Strength stability session (tempo focus)",
+        "Day 3 · Skill practice: kettlebell + core",
+        "Day 4 · Yin stretch + guided breathwork"
+      ]
+    };
 
-    // DOM elements
-    const startScreen = document.getElementById("start-screen");
-    const quizScreen = document.getElementById("quiz-screen");
-    const resultScreen = document.getElementById("result-screen");
+    const scheduleGrid = document.getElementById("scheduleGrid");
+    const filterButtons = document.querySelectorAll(".schedule-controls button");
 
-    const startBtn = document.getElementById("start-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const restartBtn = document.getElementById("restart-btn");
-
-    const usernameInput = document.getElementById("username");
-    const userGreeting = document.getElementById("user-greeting");
-    const questionNumberEl = document.getElementById("question-number");
-    const questionTextEl = document.getElementById("question-text");
-    const optionsList = document.getElementById("options");
-    const scoreText = document.getElementById("score-text");
-    const levelText = document.getElementById("level-text");
-
-    // Start Quiz
-    startBtn.addEventListener("click", () => {
-      username = usernameInput.value.trim();
-      if (!username) {
-        alert("Please enter your name to start.");
+    function renderSchedule(day = "all") {
+      scheduleGrid.innerHTML = "";
+      const filtered = day === "all" ? scheduleData : scheduleData.filter((item) => item.day === day);
+      if (!filtered.length) {
+        scheduleGrid.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No classes scheduled for this day. Check back soon!</p>';
         return;
       }
-      startScreen.classList.add("hidden");
-      quizScreen.classList.remove("hidden");
-      userGreeting.textContent = `Hi, ${username}. Answer these questions honestly.`;
-      currentQuestion = 0;
-      userAnswers = new Array(quizData.length).fill(null);
-      loadQuestion();
-    });
-
-    // Load question into UI
-    function loadQuestion() {
-      const qData = quizData[currentQuestion];
-      questionNumberEl.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
-      questionTextEl.textContent = qData.question;
-
-      optionsList.innerHTML = "";
-      qData.options.forEach((opt, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <label>
-            <input type="radio" name="option" value="${index}" />
-            <span>${opt}</span>
-          </label>
+      filtered.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "card schedule-item";
+        card.innerHTML = `
+          <strong>${item.title}</strong>
+          <p>${item.time} · Coach ${item.coach}</p>
+          <p style="color: var(--text-muted);">Level: ${item.level}</p>
+          <span class="tag">${item.day.charAt(0).toUpperCase() + item.day.slice(1)}</span>
         `;
-        optionsList.appendChild(li);
+        scheduleGrid.appendChild(card);
       });
-
-      // If user had already answered, pre-select
-      if (userAnswers[currentQuestion] !== null) {
-        const radios = document.querySelectorAll('input[name="option"]');
-        radios[userAnswers[currentQuestion]].checked = true;
-      }
-
-      // Change button text on last question
-      if (currentQuestion === quizData.length - 1) {
-        nextBtn.textContent = "Submit Quiz";
-      } else {
-        nextBtn.textContent = "Next";
-      }
     }
 
-    // Next / Submit button
-    nextBtn.addEventListener("click", () => {
-      const selected = document.querySelector('input[name="option"]:checked');
-      if (!selected) {
-        alert("Please select an answer before continuing.");
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((btn) => {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-selected", "false");
+        });
+        button.classList.add("active");
+        button.setAttribute("aria-selected", "true");
+        const day = button.dataset.day;
+        renderSchedule(day);
+      });
+    });
+
+    renderSchedule();
+
+    const plannerForm = document.getElementById("plannerForm");
+    const planList = document.getElementById("planList");
+    const planIntro = document.getElementById("planIntro");
+
+    plannerForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const goal = document.getElementById("goal").value;
+      const level = document.getElementById("level").value;
+      const days = parseInt(document.getElementById("days").value, 10);
+
+      if (!goal || !level || Number.isNaN(days)) {
+        planIntro.textContent = "Please complete all fields to generate your plan.";
+        planList.innerHTML = "";
         return;
       }
 
-      const selectedIndex = parseInt(selected.value, 10);
-      userAnswers[currentQuestion] = selectedIndex;
+      const template = routineTemplates[goal] || [];
+      const adjusted = template.slice(0, Math.min(template.length, days));
+      const actualDays = adjusted.length;
 
-      if (currentQuestion === quizData.length - 1) {
-        // Calculate score and show result
-        finishQuiz();
-      } else {
-        currentQuestion++;
-        loadQuestion();
+      if (!actualDays) {
+        planIntro.textContent = "We’re building new sessions for this goal. Check back soon!";
+        planList.innerHTML = "";
+        return;
       }
-    });
 
-    // Calculate score and display result
-    function finishQuiz() {
-      let score = 0;
-      userAnswers.forEach((ans, i) => {
-        if (ans === quizData[i].correctIndex) {
-          score++;
-        }
+      planIntro.textContent = `Here’s a ${actualDays}-day split tailored for your ${level} level.`;
+      if (actualDays < days) {
+        planIntro.textContent += " Rotate sessions or add active recovery to fill the extra days.";
+      }
+      planList.innerHTML = "";
+
+      adjusted.forEach((session, index) => {
+        const li = document.createElement("li");
+        li.className = "card";
+        li.innerHTML = `<strong>Day ${index + 1}</strong><p>${session}</p>`;
+        planList.appendChild(li);
       });
-
-      quizScreen.classList.add("hidden");
-      resultScreen.classList.remove("hidden");
-
-      scoreText.textContent = `${username}, you scored ${score} out of ${quizData.length}.`;
-
-      let level = "";
-      if (score <= 4) {
-        level = "Low Cyber Awareness – You should learn more about online safety.";
-      } else if (score <= 7) {
-        level = "Medium Cyber Awareness – Good, but there is room to improve.";
-      } else {
-        level = "High Cyber Awareness – Great job! Keep following safe practices.";
-      }
-      levelText.textContent = level;
-    }
-
-    // Restart quiz
-    restartBtn.addEventListener("click", () => {
-      resultScreen.classList.add("hidden");
-      startScreen.classList.remove("hidden");
-      usernameInput.value = "";
     });
+
+    const contactForm = document.getElementById("contactForm");
+    const formStatus = document.getElementById("formStatus");
+
+    contactForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        formStatus.textContent = "Enter a valid email to reserve your spot.";
+        return;
+      }
+      formStatus.textContent = "Thanks! A coach will reach out within 24 hours.";
+      contactForm.reset();
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
