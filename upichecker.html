@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPI ID Checker - NTPC Reporting</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<style>
+    :root {
+        --bg: linear-gradient(135deg, #6a11cb, #8e2de2);
+        --text: #fff;
+        --card-bg: rgba(0, 0, 0, 0.35);
+        --button-bg: #c084fc;
+        --button-hover: #a855f7;
+    }
+    body.light {
+        --bg: linear-gradient(135deg, #f5e1ff, #f0d9ff);
+        --text: #000;
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --button-bg: #a855f7;
+        --button-hover: #7e22ce;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 0.5s ease;
+    }
+    .container {
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 400px;
+        margin: auto;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+    }
+    input, button, textarea {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+    }
+    input, textarea {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+    }
+    button {
+        background: var(--button-bg);
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: var(--button-hover);
+        transform: scale(1.05);
+    }
+    .result {
+        margin-top: 15px;
+        font-weight: bold;
+    }
+    .report {
+        display: none;
+        margin-top: 20px;
+        background: rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 10px;
+    }
+    #suggestions {
+        display: none;
+        background: #fff;
+        color: #000;
+        border-radius: 8px;
+        width: 90%;
+        margin: 0 auto;
+        text-align: left;
+        max-height: 120px;
+        overflow-y: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    #suggestions div {
+        padding: 8px 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #ddd;
+    }
+    #suggestions div:hover {
+        background: #f3e8ff;
+    }
+    #qrcode {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .mode-toggle {
+        margin-top: 20px;
+        padding: 8px 18px;
+        border-radius: 25px;
+        border: 2px solid var(--text);
+        color: var(--text);
+        background: transparent;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .mode-toggle:hover {
+        background: var(--text);
+        color: #6a11cb;
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>UPI ID Validator</h2>
+    <p>Check if your UPI ID is valid as per Indian payment standards</p>
+
+    <input type="text" id="upi" placeholder="Enter UPI ID (e.g. name@oksbi)" oninput="showSuggestions(this.value)">
+    <div id="suggestions"></div>
+
+    <button onclick="checkUPI()">Validate</button>
+
+    <div class="result" id="result"></div>
+    <div id="qrcode"></div>
+
+    <div class="report" id="reportForm">
+        <h3>Report Fake UPI ID (NTPC Guidelines)</h3>
+        <textarea id="reason" placeholder="Describe the issue or fraud details"></textarea>
+        <button onclick="submitReport()">Submit Report</button>
+        <p id="reportStatus"></p>
+    </div>
+
+    <button class="mode-toggle" onclick="toggleMode()">🌗 Toggle Dark / Light Mode</button>
+</div>
+
+<script>
+const handles = ["@oksbi", "@okaxis", "@okicici", "@okhdfcbank", "@paytm", "@ybl", "@ibl", "@upi"];
+
+function showSuggestions(value) {
+    const suggestionBox = document.getElementById("suggestions");
+
+    if (!value.includes("@")) {
+        suggestionBox.style.display = "none";
+        return;
+    }
+
+    const query = value.split("@")[1].toLowerCase();
+    const filtered = handles.filter(h => h.replace("@", "").includes(query));
+
+    suggestionBox.innerHTML = filtered
+        .map(h => `<div onclick="selectHandle('${h}')">${h}</div>`)
+        .join('');
+
+    suggestionBox.style.display = filtered.length ? "block" : "none";
+}
+
+function selectHandle(handle) {
+    const upiInput = document.getElementById("upi");
+    upiInput.value = upiInput.value.split("@")[0] + handle;
+    document.getElementById("suggestions").style.display = "none";
+}
+
+function checkUPI() {
+    const upi = document.getElementById("upi").value.trim();
+    const result = document.getElementById("result");
+    const reportForm = document.getElementById("reportForm");
+    const qrDiv = document.getElementById("qrcode");
+
+    qrDiv.innerHTML = "";
+
+    const valid = /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/.test(upi);
+
+    result.textContent = valid ? "✅ Valid UPI ID Format" : "❌ Invalid UPI ID Format";
+    result.style.color = valid ? "#c084fc" : "#ff4d4d";
+
+    // Show report form only if invalid
+    reportForm.style.display = valid ? "none" : "block";
+
+    if (valid) {
+        new QRCode(qrDiv, {
+            text: `upi://pay?pa=${upi}&pn=User`,
+            width: 160,
+            height: 160,
+            colorDark: "#000",
+            colorLight: "#fff"
+        });
+
+        saveToDatabase(upi);
+    }
+}
+
+// ✅ UPDATED: sends report to backend
+function submitReport() {
+    const reason = document.getElementById("reason").value.trim();
+    const status = document.getElementById("reportStatus");
+    const upi = document.getElementById("upi").value.trim();
+
+    if (!upi) {
+        status.textContent = "⚠️ Please enter the UPI ID first.";
+        return;
+    }
+
+    if (!reason.length) {
+        status.textContent = "⚠️ Please describe the issue before submitting.";
+        return;
+    }
+
+    fetch("report_upi.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body:
+            "upi_id=" + encodeURIComponent(upi) +
+            "&reason=" + encodeURIComponent(reason)
+    })
+    .then(res => res.text())
+    .then(text => {
+        status.textContent = text;
+        document.getElementById("reason").value = "";
+    })
+    .catch(err => {
+        console.error(err);
+        status.textContent = " submitted report. Try again.";
+    });
+}
+
+function toggleMode() {
+    document.body.classList.toggle("light");
+}
+
+function saveToDatabase(upiID) {
+    const currentTime = new Date().toISOString();
+
+    fetch("save_upi.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "upi_id=" + encodeURIComponent(upiID) + "&time=" + encodeURIComponent(currentTime)
+    })
+    .then(response => response.text())
+    .then(data => console.log(data))
+    .catch(error => console.error("Error:", error));
+}
+</script>
+
+</body>
+</html>
